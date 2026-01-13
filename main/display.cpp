@@ -95,7 +95,7 @@ void Display::update() {
     snprintf(buf, sizeof(buf), "Stp %d %ds", mProfileStage, mProfileTime);
     mDisplay->drawString(0, 11, buf);
     snprintf(ipbuf, sizeof(ipbuf), "%d.%d.%d.%d", mIp[0], mIp[1], mIp[2], mIp[3]);
-    mDisplay->drawString(0, 28/*21*/, ipbuf); // Test
+    mDisplay->drawString(0, 28, ipbuf); // Test
     mDisplay->drawString(0, 39, "Measure");
     mDisplay->drawString(48, 39, "Target");
     mDisplay->setFont(ArialMT_Plain_16);
