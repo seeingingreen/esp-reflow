@@ -96,12 +96,12 @@ void Display::update() {
     mDisplay->drawString(0, 11, buf);
     snprintf(ipbuf, sizeof(ipbuf), "%d.%d.%d.%d", mIp[0], mIp[1], mIp[2], mIp[3]);
     mDisplay->drawString(0, 28/*21*/, ipbuf); // Test
-    mDisplay->drawString(0, 39, "Meas");
-    mDisplay->drawString(48, 39, "Targ");
+    mDisplay->drawString(0, 39, "Measure");
+    mDisplay->drawString(48, 39, "Target");
     mDisplay->setFont(ArialMT_Plain_16);
-    snprintf(buf, 5, "%03d", mTempReading);
+    snprintf(buf, 5, "%03dc", mTempReading);
     mDisplay->drawString(0, TEMP_Y, buf);
-    snprintf(buf, 5, "%03d", mTempTarget);
+    snprintf(buf, 5, "%03dc", mTempTarget);
     mDisplay->drawString(48, TEMP_Y, buf);
 
     // Draw power bar ticks

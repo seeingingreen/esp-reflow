@@ -45,3 +45,19 @@ I guess this is because the mDNS request is slow, and the proxy must not be cach
 the result. All I know is that setting the target by IP address results in much faster
 requests.
 
+### ESP32 Application
+
+* Environment setup:
+    * I have this project building against esp-idf v4.0-beta2, which may have been what it was originally built against. Later versions of 4.X may work, but try them at your own peril.
+    * Running Ubuntu 22.04.5 LTS x86_64, may need to install python-is-python3 in addition to normal esp-idf dependencies. I haven't tried other Linux distros, but this absolutely _will not_ build on Apple Silicon Macs :(
+* Run `make menuconfig` and set your Wifi SSID/password
+    * I encountered issues with `make menuconfig` in v4.0-beta2, but it works in v3.3.6. Could be an artifact of my environment being super goofed when I tried
+* Run `make` to build the application and supporting components
+* Flashing:
+    * `make flash` doesn't properly flash the spiffs partitions, so we'll do it manually. Replace <> items with info specific to your setup
+    * If you just need to update the app, you can omit the other components from this command
+```
+python <path-to-esp-idf>/components/esptool_py/esptool/esptool.py --chip esp32 --port <serial port, ex /dev/ttyUS0> --baud 115200 --before default_reset --after hard_reset write_flash -z --flash_mode dio --flash_freq 40m --flash_size detect 0x1000 build/bootloader/bootloader.bin 0x10000 build/reflow.bin 0x8000 build/partitions.bin 0x210000 build/jsclient.bin 0x310000 build/storage.bin
+``` 
+
+* This works fine on an ESP32-WROOM-32D (4MB) and standalone 64x128 OLED, which I already had on hand.
