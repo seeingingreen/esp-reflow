@@ -10,7 +10,7 @@
 #include "esp_spiffs.h"
 #include "esp_system.h"
 
-#include "Display.h"
+#include "display.h"
 #include "HttpServer.h"
 #include "Max31855.h"
 #include "mdns.h"
@@ -92,8 +92,11 @@ void main_loop(Display &display, Max31855 &sensor) {
     HttpServer http(&control, &profileManager, &log);
     http.init();
     control.setProfile(profileManager.getActiveProfile());
+    unsigned char current_ip[4] = {0, 0, 0, 0};
 
     while(1) {
+        WIFI_GetIp(current_ip);
+        display.setIp(current_ip);
         control.run();
         if(control.currentState() != Control::Idle) {
             log.log(control.integrationValue(), sensor.lastReading(), control.targetTemp(), control.output());

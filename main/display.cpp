@@ -1,11 +1,11 @@
-#include "Display.h"
+#include "display.h"
 
 #include "profile.h"
 
 #include <stdio.h>
+#include <string.h>
 
-
-#define TEMP_Y (40)
+#define TEMP_Y (49)
 
 void Display::setTempReading(uint16_t temp_c) {
     mTempReading = temp_c;
@@ -27,6 +27,10 @@ void Display::setProfile(Profile &profile, uint16_t stage, uint16_t sec_into_sta
 
 void Display::setStatus(const char *status) {
     mStatus = status;
+}
+
+void Display::setIp(unsigned char *ip) {
+    memcpy(mIp, ip, 4);
 }
 
 #define TEMP2Y(t) (top + height - ((t-minTemp) * height / (maxTemp - minTemp)))
@@ -80,6 +84,7 @@ void Display::renderProfile(uint16_t left, uint16_t top, uint16_t width, uint16_
 
 void Display::update() {
     char buf[12];
+    char ipbuf[15]; // Max #chars in an IPv4 address
 
     mDisplay->clear();
     mDisplay->setFont(ArialMT_Plain_10);
@@ -88,10 +93,12 @@ void Display::update() {
         mDisplay->drawString(0, 0, mStatus);
     }
     snprintf(buf, sizeof(buf), "Stp %d %ds", mProfileStage, mProfileTime);
-    mDisplay->drawString(0, 12, buf);
-    mDisplay->drawString(0, 30, "Meas");
-    mDisplay->drawString(48, 30, "Targ");
-    mDisplay->setFont(ArialMT_Plain_24);
+    mDisplay->drawString(0, 11, buf);
+    snprintf(ipbuf, sizeof(ipbuf), "%d.%d.%d.%d", mIp[0], mIp[1], mIp[2], mIp[3]);
+    mDisplay->drawString(0, 28/*21*/, ipbuf); // Test
+    mDisplay->drawString(0, 39, "Meas");
+    mDisplay->drawString(48, 39, "Targ");
+    mDisplay->setFont(ArialMT_Plain_16);
     snprintf(buf, 5, "%03d", mTempReading);
     mDisplay->drawString(0, TEMP_Y, buf);
     snprintf(buf, 5, "%03d", mTempTarget);

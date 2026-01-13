@@ -25,6 +25,8 @@ public:
 
     void setStatus(const char *status);
 
+    void setIp(unsigned char *ip);
+
     void update();
 private:
     OLEDDisplay *mDisplay;
@@ -35,6 +37,7 @@ private:
     uint16_t mTempReading;
     uint16_t mTempTarget;
     uint8_t mOutput;
+    unsigned char mIp[4];
 
     void renderProfile(uint16_t left, uint16_t top, uint16_t width, uint16_t height);
 };
